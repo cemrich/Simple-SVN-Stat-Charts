@@ -19,7 +19,7 @@ def loadCss():
     cssStyle = style.read()
     style.close()
 
-def writeChartsToFile(directory, chartDic, fileName=None, pageList=None):
+def writeChartsToFile(directory, charts, fileName=None, pageList=None):
     if not fileName:
         fileName = 'overview' 
         
@@ -33,7 +33,7 @@ def writeChartsToFile(directory, chartDic, fileName=None, pageList=None):
             innerHtml += link % (page + '.html', cssClass, page)
         innerHtml += '</nav>'
     
-    for headline, chart in chartDic.items():
+    for headline, chart in charts:
         innerHtml += '<h2>' + headline + '</h2>'
         innerHtml += chart.display.Img(800, 300)
         
@@ -60,16 +60,16 @@ if __name__ == '__main__':
     generator = ChartGenerator(log)
     loadCss()
     
-    charts = {}
-    charts['commits by date'] = generator.commitsByDate()
-    charts['commits by hour'] = generator.commitsByHour()
-    charts['commits by weekday'] = generator.commitsByWeekDay()
-    charts['commits by name'] = generator.commitsByName()
+    charts = []
+    charts.append(('commits by date', generator.commitsByDate()))
+    charts.append(('commits by hour', generator.commitsByHour()))
+    charts.append(('commits by weekday', generator.commitsByWeekDay()))
+    charts.append(('commits by user', generator.commitsByName()))
     writeChartsToFile(directory, charts, pageList=list(users))
     
     for user in users:
-        charts = {}
-        charts['commits by date'] = generator.commitsByDate(user)
-        charts['commits by hour'] = generator.commitsByHour(user)
-        charts['commits by weekday'] = generator.commitsByWeekDay(user)
+        charts = []
+        charts.append(('commits by date', generator.commitsByDate(user)))
+        charts.append(('commits by hour', generator.commitsByHour(user)))
+        charts.append(('commits by weekday', generator.commitsByWeekDay(user)))
         writeChartsToFile(directory, charts, user, list(users))
