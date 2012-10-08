@@ -1,3 +1,4 @@
+import sys
 from svnLog import SvnLog
 from chartGenerator import ChartGenerator
 from os import path, makedirs
@@ -39,7 +40,11 @@ def writeChartsToFile(directory, chartDic, fileName=None, pageList=None):
 
 if __name__ == '__main__':
     
-    repoUrl = 'https://test.url/repo'
+    if len(sys.argv) < 2:
+        print "please pass the full repository url as command line argument"
+        exit(2)
+        
+    repoUrl = sys.argv[1]
     directory = repoUrl.strip('/\\').split('/')[-1]
     log = SvnLog(repoUrl)
     users = log.getUserList()
