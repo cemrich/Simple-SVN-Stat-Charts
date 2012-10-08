@@ -9,8 +9,15 @@ Created on 08.10.2012
 @author: Tine
 '''
 
-template = "<html><head><meta charset='utf-8'><title>SVN Statistics</title></head><body>%s</body></html>"
-link = '<a href="%s">%s</a>'
+template = "<html><head><meta charset='utf-8'><title>SVN Statistics</title><style type='text/css'>%s</style></head><body>%s</body></html>"
+link = '<a href="%s" class="%s">%s</a>'
+cssStyle = ''
+
+def loadCss():
+    global cssStyle
+    style = file('css/style.css', 'r')
+    cssStyle = style.read()
+    style.close()
 
 def writeChartsToFile(directory, chartDic, fileName=None, pageList=None):
     if not fileName:
@@ -22,14 +29,16 @@ def writeChartsToFile(directory, chartDic, fileName=None, pageList=None):
         pageList.insert(0, 'overview')
         innerHtml += '<nav>'
         for page in pageList:
-            innerHtml += link % (page + '.html', page)
+            cssClass = 'active' if page == fileName else ''
+            innerHtml += link % (page + '.html', cssClass, page)
         innerHtml += '</nav>'
     
     for headline, chart in chartDic.items():
         innerHtml += '<h2>' + headline + '</h2>'
         innerHtml += chart.display.Img(800, 300)
         
-    html = template % innerHtml
+       
+    html = template % (cssStyle, innerHtml)
     
     if not path.exists(directory):
         makedirs(directory)
@@ -49,6 +58,7 @@ if __name__ == '__main__':
     log = SvnLog(repoUrl)
     users = log.getUserList()
     generator = ChartGenerator(log)
+    loadCss()
     
     charts = {}
     charts['commits by date'] = generator.commitsByDate()
