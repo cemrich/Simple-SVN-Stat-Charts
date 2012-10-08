@@ -26,10 +26,11 @@ class SvnLog(object):
 
     def _getLog(self):
         p = os.popen('svn log ' + self.repoUrl)
-        log = p.readlines()[1::2]
+        log = p.readlines()
         log = [self._logEntryToDict(entry.strip().split(" | "))
         for entry in log
-            if entry.endswith("line\n")]
+            if entry[0] == 'r' and 
+            (entry.endswith("line\n") or entry.endswith("lines\n"))]
         p.close()
         return log
 
