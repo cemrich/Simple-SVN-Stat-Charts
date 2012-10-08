@@ -23,9 +23,11 @@ class ChartGenerator(object):
     classdocs
     '''
 
-    chartColors = ['8DD3C7', 'EECCB3', 'BEBADA', 'FB8072', 
-                   '80B1D3', 'FDB462', 'B3DE69', 'FCCDE5', 
-                   'D9D9D9', 'BC80BD', 'CCEBC5', 'FFED6F']
+#    chartColors = ['56D2CF', 'D9545D', 'A88444', '7255CF', 'BDFF4C',
+#                   '2C9CB8', 'BF4931', 'FFD946', '6F25B5', '22CA24', 
+#                   '29B870', 'BF2E92', 'FFA442', '233CB5', 'C7DF22']
+ 
+    chartColors = ['9ba57d', '9e7bc2', '71678a', 'c3c7bb', 'ab6c5e', 'c8bb5a', '61c499', 'b376b6', '6761bb', 'c4c4c1', '768a5d', 'aac175', '7dafb6', 'b08097', '6d5fbd', 'c3c6bf', '758974', 'aac563', '5fc78c', 'c670b1', '6862b7', 'c0c4c2', '95785d', 'a9c275', '63bcc0', 'b17ba8', '665bc5']
     
     def _colorChart(self, chart):
         index = -1
@@ -40,8 +42,12 @@ class ChartGenerator(object):
         chart = google_chart_api.BarChart()
         chart.stacked = True
         for name, values in userDic.items():
-            chart.AddBars(values, label=name)
-        self._colorChart(chart)
+            color = None
+            if name in self.users:
+                num = self.users.index(name)
+                color = self.chartColors[num]
+            chart.AddBars(values, label=name, color=color)
+        #self._colorChart(chart)
         
         # labeling on left axis
         chart.left.min = 0
@@ -104,7 +110,7 @@ class ChartGenerator(object):
         days = 'Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag'.split()
         
         if user:
-            chart = self._getCommitBarChart({'commits': commits[1:] + commits[:1]}, max(commits))
+            chart = self._getCommitBarChart({user: commits[1:] + commits[:1]}, max(commits))
             chart.bottom.labels = days[1:] + days[:1]
             return chart
         else:
