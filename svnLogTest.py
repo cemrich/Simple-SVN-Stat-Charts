@@ -3,8 +3,7 @@ from svnLogHelper import countLogEntriesByFunc
 
 '''
 Created on 08.10.2012
-
-@author: Tine
+@author: Christine Emrich
 '''
 
 if __name__ == '__main__':

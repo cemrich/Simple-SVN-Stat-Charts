@@ -1,7 +1,6 @@
 '''
 Created on 08.10.2012
-
-@author: Tine
+@author: Christine Emrich
 '''
    
 def getListByUser(log, user):

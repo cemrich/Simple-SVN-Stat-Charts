@@ -5,8 +5,7 @@ from datetime import timedelta
 
 '''
 Created on 08.10.2012
-
-@author: Tine
+@author: Christine Emrich
 '''
         
 def getPercentageStr(label, total, part):

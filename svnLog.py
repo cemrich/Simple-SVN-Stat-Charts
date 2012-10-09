@@ -3,8 +3,7 @@ from datetime import datetime
 
 '''
 Created on 08.10.2012
-
-@author: Tine
+@author: Christine Emrich
 '''
 
 class SvnLog(object):

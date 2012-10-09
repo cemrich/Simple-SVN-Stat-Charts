@@ -5,8 +5,7 @@ from os import path, makedirs
 
 '''
 Created on 08.10.2012
-
-@author: Tine
+@author: Christine Emrich
 '''
 
 template = "<html><head><meta charset='utf-8'><title>SVN Statistics</title><style type='text/css'>%s</style></head><body><h1>%s</h1>%s</body></html>"
