@@ -107,11 +107,11 @@ class ChartGenerator(object):
     def commitsByWeekDay(self, user=None):
         byDay = countLogEntriesByFunc(self.log, lambda entry: int(entry['date'].strftime("%w")), user)
         dayNumber, commits = zip(*byDay.items())
-        days = 'Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag'.split()
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         
         if user:
             chart = self._getCommitBarChart({user: commits[1:] + commits[:1]}, max(commits))
-            chart.bottom.labels = days[1:] + days[:1]
+            chart.bottom.labels = days
             return chart
         else:
             totalCommits = sum(commits)
