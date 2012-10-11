@@ -1,4 +1,28 @@
+function navItemClick() {
+	$('nav a').removeClass('active');
+	$(this).addClass('active');
+	var current = $(this).html();
+}
+
+function createUserNav() {
+	var nav = $("nav");
+	var navItem = $('<a href="#" class="active">showAll</a>');
+	nav.append(navItem);
+	navItem.click(navItemClick);
+	
+	var current = window.location.hash.substr(1, window.location.hash.length-1);
+	$(users).each(function(i, user) {
+		navItem = $('<a href="#' + user + '">' + user + '</a>');
+		navItem.click(navItemClick);
+		nav.append(navItem);
+		if (current === user)
+			navItemClick.call(navItem);
+	});
+}
+
 $(document).ready(function() {
+		 
+	createUserNav();
 		 
 	var options = {
 		xaxis: {

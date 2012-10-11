@@ -8,6 +8,7 @@ html {
 
 body {
 	padding: 1em;
+	padding-top: 3em;
 	margin: auto;
 	max-width: 850px;
 	background-color: white;
@@ -21,17 +22,32 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0.1em 0.3em;
 }
 
+nav {
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 1em;
+	background-color: #333;
+	border-bottom: 2px solid ;
+	z-index: 500;
+}
+
 nav a {
-	margin: 0 1em;
-	color: #333333;
+	margin: 0 0.3em;
+	padding: 0.3em;
+	color: white;
 	text-decoration: none;
 	font-weight: bold;
-	border-bottom: 1px dotted #333333;
+	text-decoration: none;
+	border: none;
 }
 
 nav a:hover, nav a.active {
-	color: white;
-	background-color: #333333;
+	color: #333;
+	background-color: white;
+	text-decoration: underline;
 }
 			
 .chart {

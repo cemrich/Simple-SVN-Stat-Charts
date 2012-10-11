@@ -16,11 +16,12 @@ def prepareDirectory(directory):
     
     copy_tree('htmlSource', directory)
 
-def writeData(directory, dateData, hourData, dayData, nameData):
+def writeData(directory, users, dateData, hourData, dayData, nameData):
     jsFile = file(path.join(directory, 'js', 'data.js'), 'r+')
     js = jsFile.read()
     jsFile.seek(0, 0)
-    js = js % {'hourData': json.dumps(hourData),
+    js = js % {'users': json.dumps(users),
+               'hourData': json.dumps(hourData),
                'dateData': json.dumps(dateData),
                'dayData': json.dumps(dayData),
                'nameData': json.dumps(nameData)}
@@ -38,7 +39,7 @@ def createStats(repoUrl):
     dayData = generator.commitsByWeekDay()
     nameData = generator.commitsByName()
     
-    writeData(directory, dateData, hourData, dayData, nameData)
+    writeData(directory, log.getUserList(), dateData, hourData, dayData, nameData)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
