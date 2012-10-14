@@ -68,6 +68,24 @@ class ChartGenerator(object):
             seriesArr.append(series)
         
         return seriesArr
+    
+    def commitsByDayhour(self):
+        datehourFunc= lambda entry: (int(entry['date'].strftime("%H")), int(entry['date'].strftime("%w"))) # (hour, day)
+        seriesArr = []
+                
+        byDatehour = countLogEntriesByFunc(self.log, datehourFunc)   
+        overviewSeries = self.getSeries('overview', byDatehour)
+        seriesArr.append(overviewSeries)
+        
+        for user in self.log.getUserList():
+            byDatehour = countLogEntriesByFunc(self.log, datehourFunc, user)
+            series = self.getSeries(user, byDatehour)
+            seriesArr.append(series)
+        
+        for series in seriesArr:
+            series['data'] = [[key[0], key[1], value] for key, value in series['data'].items()]
+        
+        return seriesArr
 
     def __init__(self, log):
         '''

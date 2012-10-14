@@ -1,3 +1,10 @@
+function cloneArray(arr) {
+	var a = new Array(); 
+	for (var property in arr) {
+		a[property] = typeof (arr[property]) == 'object' ? cloneArray(arr[property]) : arr[property]
+	} return a
+}
+
 function navItemClick() {
 	$('nav a').removeClass('active');
 	$(this).addClass('active');
@@ -11,20 +18,39 @@ function createUserNav() {
 	var current = window.location.hash.substr(1, window.location.hash.length-1);
 	var nav = $("nav");
 	var navItem = $('<a href="#overview" class="active">showAll</a>');
+	var overviewItem = navItem;
 	nav.append(navItem);
 	navItem.click(navItemClick);
-	
-	if (current === 'overview')
-		navItemClick.call(navItem);
 		
+	var user = false;
 	$(users).each(function(i, user) {
 		navItem = $('<a href="#' + user + '">' + user + '</a>');
 		navItem.click(navItemClick);
 		nav.append(navItem);
-		if (current === user)
+		if (current === user) {
 			navItemClick.call(navItem);
+			user = true;
+		}
 	});
+	
+	if (!user) 
+		navItemClick.call(overviewItem);
 }	
+
+function normalizeBubbles(plot, series, datapoints) {
+	var referenceEntries = series.data;			// size relative to OWN commits
+//	var referenceEntries = dayhourData[0].data; // size relative to ALL commits
+	var overviewEntries = dayhourData[0].data;
+
+	var max = 0;
+	for (var i = 0; i < referenceEntries.length; i++) {
+		if (referenceEntries[i][2] > max)
+			max = referenceEntries[i][2];
+	}
+	var dataEntries = series.data
+    for (var i = 0; i < dataEntries.length; i++)
+    	dataEntries[i][2] = dataEntries[i][2] / max * 1.2;
+}
 	
 var dateOptions = {
 	zoom: { interactive: true },
@@ -45,6 +71,34 @@ var dateOptions = {
 		bars: { show: true, fill: 0.6, lineWidth: 0, align: 'center', barWidth: 24*60*60*1000 }
 	},
 	grid: { hoverable: true }
+};
+	
+var dayhourOptions = {
+	xaxis: {
+		zoomRange: null,  // or [number, number] (min range, max range) or false
+		panRange: null,   // or [number, number] (min, max) or false
+		tickSize: 1,
+		tickDecimals: 0
+	},
+	yaxis: {
+		zoomRange: false,  // or [number, number] (min range, max range) or false
+		panRange: false,   // or [number, number] (min, max) or false
+		tickFormatter: function(num) { return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', ''][num] },
+		tickDecimals: 0,
+		tickSize: 1
+	},
+	series: {
+		bubbles: {
+			active: true,
+			show: true,
+			fill: true,
+			lineWidth: 0
+		}
+	},
+	grid: { hoverable: true },
+	hooks: {
+		processDatapoints: [normalizeBubbles]
+	}
 };
 
 var hourOptions = {
@@ -111,6 +165,7 @@ function plotCharts(user=null) {
 	var userHourData = hourData;
 	var userDayData = dayData;
 	var userDateData = overviewData;
+	var userDayhourData = [cloneArray(dayhourData[0].data)];
 	var color = null;
 	
 	if (user != null) {
@@ -126,6 +181,10 @@ function plotCharts(user=null) {
 			if (data['label'] === user)
 				userDayData = [data];
 		});
+		$(dayhourData).each(function (i, data) {
+			if (data['label'] === user)
+				userDayhourData = [cloneArray(data)];
+		});
 		
 		color = users.indexOf(user);
 	} 
@@ -133,7 +192,11 @@ function plotCharts(user=null) {
 	hourOptions.series.color = color;
 	dayOptions.series.color = color;
 	dateOptions.series.color = color;
+	if (color === null)
+		color = '#888888';
+	dayhourOptions.series.color = color;
 	$.plot($("#hour"), userHourData, hourOptions);
+	$.plot($("#dayhour"), userDayhourData, dayhourOptions);
 	$.plot($("#day"), userDayData, dayOptions);
 	$.plot($("#date"), userDateData, dateOptions);
 	$.plot($("#name"), nameData, nameOptions);
