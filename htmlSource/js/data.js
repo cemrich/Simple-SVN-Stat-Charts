@@ -4,3 +4,5 @@ var hourData = %(hourData)s;
 var dayData = %(dayData)s;
 var dayhourData = %(dayhourData)s;
 var nameData = %(nameData)s;
+
+var date = '%(date)s';

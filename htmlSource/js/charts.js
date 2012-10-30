@@ -153,7 +153,7 @@ var nameOptions = {
 				formatter: function(label, series) {
 					return '<div style="padding: 4px;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
 				},
-				threshold: 0.1,
+				threshold: 0.03,
 				background: { opacity: 0.6 } 
 			}
 		}
@@ -204,6 +204,7 @@ function plotCharts(user=null) {
 
 $(document).ready(function() {
 		 
+	$('.date').html(date);
 	createUserNav();
 	
 	function showTooltip(x, y, contents) {

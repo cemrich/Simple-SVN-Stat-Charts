@@ -4,6 +4,7 @@ from os import path, makedirs
 from svnLog import SvnLog
 import json
 import sys
+import datetime
 
 '''
 Created on 08.10.2012
@@ -25,7 +26,9 @@ def writeData(directory, users, dateData, hourData, dayData, nameData, dayhourDa
                'dateData': json.dumps(dateData),
                'dayData': json.dumps(dayData),
                'dayhourData': json.dumps(dayhourData),
-               'nameData': json.dumps(nameData)}
+               'nameData': json.dumps(nameData),
+               
+               'date': str(datetime.datetime.today())}
     jsFile.write(js)
     jsFile.close()
 
