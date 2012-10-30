@@ -83,7 +83,7 @@ class ChartGenerator(object):
             seriesArr.append(series)
         
         for series in seriesArr:
-            series['data'] = [[key[0], key[1], value] for key, value in series['data'].items()]
+            series['data'] = [[key[0], (key[1]-1 if key[1] != 0 else 6), value] for key, value in series['data'].items()]
         
         return seriesArr
 
